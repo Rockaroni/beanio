@@ -1,50 +1,100 @@
-# Welcome to your Expo app 👋
+# Beanio - Coffee Bean Rating App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Beanio is a mobile app that helps coffee enthusiasts discover, rate, and track their coffee bean experiences. Inspired by wine apps like Vivino, Beanio allows users to scan coffee bean bags, get detailed information about the beans, and maintain a personal collection of ratings and tasting notes.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Scan Coffee Beans**: Use your camera to scan coffee bean bags and get detailed information
+- **AI-Powered Analysis**: Leverages Google Gemini Cloud Vision AI to extract information from coffee bean packaging
+- **Rate and Review**: Rate coffee beans and add personal tasting notes
+- **Track Your Collection**: Keep a record of all your scanned and rated coffee beans
+- **Discover Similar Beans**: Get recommendations for similar beans based on your preferences
+- **User-Friendly Interface**: Beautiful coffee-themed design for an immersive experience
 
-   ```bash
+## Tech Stack
+
+- **React Native**: Cross-platform mobile development
+- **Expo**: Development framework and tools
+- **Expo Router**: File-based routing system
+- **Google Gemini AI**: For image analysis and bean identification
+- **AsyncStorage**: For local data persistence
+- **React Navigation**: For app navigation
+- **React Native Elements**: UI component library
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+- Expo CLI
+- Expo Go app on your mobile device
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/Rockaroni/beanio.git
+   cd beanio
+   ```
+
+2. Install dependencies:
+   ```
    npm install
    ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
+   or
+   ```
+   yarn install
    ```
 
-In the output, you'll find options to open the app in a
+3. Start the development server:
+   ```
+   npm start
+   ```
+   or
+   ```
+   yarn start
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+4. Scan the QR code with the Expo Go app on your mobile device to launch the app.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Project Structure
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+beanio/
+├── app/                   # Main app screens using Expo Router
+│   ├── (tabs)/            # Tab-based screens
+│   ├── bean-detail.tsx    # Bean detail screen
+│   ├── profile.tsx        # User profile screen
+│   ├── rating.tsx         # Bean rating screen
+│   └── scan.tsx           # Scan screen
+├── src/
+│   ├── navigation/        # Navigation configuration
+│   ├── screens/           # Screen components
+│   ├── services/          # API and data services
+│   └── styles/            # Styling and theme
+├── assets/                # Images, fonts, etc.
+└── ...
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Usage
 
-## Learn more
+1. **Home Screen**: View your recently scanned and top-rated coffee beans
+2. **Scan Screen**: Capture an image of a coffee bean bag to analyze
+3. **Bean Detail Screen**: View detailed information about a coffee bean
+4. **Rating Screen**: Rate coffee beans and add tasting notes
+5. **Profile Screen**: View your coffee journey stats and app settings
 
-To learn more about developing your project with Expo, look at the following resources:
+## Contributing
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Join the community
+## License
 
-Join our community of developers creating universal apps.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Acknowledgments
+
+- Inspired by wine apps like Vivino
+- Coffee bean information powered by Google Gemini AI
+- Special thanks to all coffee enthusiasts who contributed to testing and feedback
