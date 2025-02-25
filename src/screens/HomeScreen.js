@@ -1,22 +1,34 @@
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, StatusBar } from 'react-native';
-import { Link, router } from 'expo-router';
+import React, { useState, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  TouchableOpacity, 
+  Image,
+  StatusBar,
+  SafeAreaView
+} from 'react-native';
 import { Button, Card, Icon } from '@rneui/themed';
-import { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SIZES, SHADOWS } from '../styles/theme';
+import { getAllBeans, getAllRatings } from '../services/storageService';
 
-// Import our theme and services
-import { COLORS, SIZES, SHADOWS } from '../../src/styles/theme';
-import { getAllBeans, getAllRatings } from '../../src/services/storageService';
-
-export default function HomeScreen() {
+const HomeScreen = ({ navigation }) => {
   const [recentBeans, setRecentBeans] = useState([]);
   const [topRatedBeans, setTopRatedBeans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load data when the component mounts
+    // Load data when the screen comes into focus
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+    });
+
+    // Initial data load
     loadData();
-  }, []);
+
+    return unsubscribe;
+  }, [navigation]);
 
   const loadData = async () => {
     setIsLoading(true);
@@ -58,10 +70,7 @@ export default function HomeScreen() {
     <TouchableOpacity
       key={bean.id || index}
       style={styles.beanCard}
-      onPress={() => router.push({
-        pathname: '/bean-detail',
-        params: { beanId: bean.id }
-      })}
+      onPress={() => navigation.navigate('BeanDetail', { beanId: bean.id })}
     >
       <Card containerStyle={styles.card}>
         <View style={styles.cardContent}>
@@ -118,7 +127,7 @@ export default function HomeScreen() {
         title="Scan Coffee Bean"
         icon={{ name: 'camera', type: 'font-awesome', color: 'white' }}
         buttonStyle={styles.scanButton}
-        onPress={() => router.push('/scan')}
+        onPress={() => navigation.navigate('Scan')}
       />
     </View>
   );
@@ -137,7 +146,7 @@ export default function HomeScreen() {
           
           <TouchableOpacity
             style={styles.profileButton}
-            onPress={() => router.push('/profile')}
+            onPress={() => navigation.navigate('Profile')}
           >
             <Icon name="user-circle" type="font-awesome" size={24} color={COLORS.primary} />
           </TouchableOpacity>
@@ -150,7 +159,7 @@ export default function HomeScreen() {
             icon={{ name: 'camera', type: 'font-awesome', color: 'white', size: 20 }}
             buttonStyle={styles.mainScanButton}
             titleStyle={styles.mainScanButtonText}
-            onPress={() => router.push('/scan')}
+            onPress={() => navigation.navigate('Scan')}
           />
         </View>
         
@@ -202,7 +211,7 @@ export default function HomeScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -210,138 +219,141 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
-    paddingVertical: SIZES.padding,
+    padding: SIZES.spacing,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: SIZES.padding,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    marginBottom: SIZES.spacingLarge,
+    paddingHorizontal: SIZES.spacing,
   },
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   logoText: {
-    fontSize: SIZES.h2,
+    fontSize: SIZES.large,
     fontWeight: 'bold',
     color: COLORS.primary,
-    marginLeft: SIZES.base,
+    marginLeft: SIZES.spacingSmall,
   },
   profileButton: {
-    padding: SIZES.base,
+    padding: SIZES.spacingSmall,
   },
   scanContainer: {
-    padding: SIZES.padding,
+    marginBottom: SIZES.spacingXLarge,
   },
   mainScanButton: {
     backgroundColor: COLORS.primary,
-    padding: SIZES.base,
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.borderRadius,
+    paddingVertical: SIZES.spacingMedium,
+    ...SHADOWS.medium,
   },
   mainScanButtonText: {
-    fontSize: SIZES.h3,
-    color: COLORS.white,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: SIZES.medium,
+    fontWeight: 'bold',
   },
   section: {
-    padding: SIZES.padding,
+    marginBottom: SIZES.spacingXLarge,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SIZES.base,
+    marginBottom: SIZES.spacingMedium,
+    paddingHorizontal: SIZES.spacingSmall,
   },
   sectionTitle: {
-    fontSize: SIZES.h3,
+    fontSize: SIZES.medium,
     fontWeight: 'bold',
     color: COLORS.text,
   },
   seeAllText: {
-    fontSize: SIZES.body4,
-    color: COLORS.text,
+    fontSize: SIZES.small,
+    color: COLORS.primary,
   },
   horizontalList: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingLeft: SIZES.spacingSmall,
   },
   beanCard: {
-    margin: SIZES.base,
-    width: SIZES.width * 0.4,
+    width: 160,
+    marginRight: SIZES.spacingMedium,
   },
   card: {
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.radius,
-    ...SHADOWS.light,
+    margin: 0,
+    padding: SIZES.spacingSmall,
+    borderRadius: SIZES.borderRadius,
+    ...SHADOWS.small,
   },
   cardContent: {
-    padding: SIZES.base,
+    alignItems: 'center',
   },
   beanImageContainer: {
-    width: '100%',
-    height: SIZES.width * 0.4,
-    borderRadius: SIZES.radius,
-    overflow: 'hidden',
+    marginBottom: SIZES.spacingSmall,
   },
   beanImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: 100,
+    height: 100,
+    borderRadius: SIZES.borderRadius,
   },
   beanImagePlaceholder: {
+    backgroundColor: COLORS.backgroundDark,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.background,
   },
   beanInfo: {
-    padding: SIZES.base,
+    width: '100%',
   },
   beanName: {
-    fontSize: SIZES.h4,
+    fontSize: SIZES.medium,
     fontWeight: 'bold',
     color: COLORS.text,
+    marginBottom: 2,
   },
   roasterName: {
-    fontSize: SIZES.body4,
-    color: COLORS.text,
+    fontSize: SIZES.small,
+    color: COLORS.textLight,
+    marginBottom: 4,
   },
   ratingContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: SIZES.base,
+    marginBottom: 4,
   },
   beanDetails: {
-    fontSize: SIZES.body4,
-    color: COLORS.text,
+    fontSize: SIZES.xSmall,
+    color: COLORS.textLight,
   },
   emptyStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: SIZES.padding,
+    justifyContent: 'center',
+    padding: SIZES.spacingXLarge,
+    marginTop: SIZES.spacingXLarge,
   },
   emptyStateText: {
-    fontSize: SIZES.h2,
+    fontSize: SIZES.large,
     fontWeight: 'bold',
     color: COLORS.text,
+    marginTop: SIZES.spacingMedium,
   },
   emptyStateSubtext: {
-    fontSize: SIZES.body4,
-    color: COLORS.text,
+    fontSize: SIZES.medium,
+    color: COLORS.textLight,
     textAlign: 'center',
-    marginVertical: SIZES.base,
+    marginVertical: SIZES.spacingMedium,
   },
   scanButton: {
     backgroundColor: COLORS.primary,
-    padding: SIZES.base,
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.borderRadius,
+    paddingHorizontal: SIZES.spacingLarge,
+    marginTop: SIZES.spacingMedium,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: SIZES.spacingXLarge,
   },
 });
+
+export default HomeScreen;
